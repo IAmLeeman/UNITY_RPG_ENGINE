@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        SceneController.Instance.testScene();
+        SceneController.Instance.testScene("bg/bsod", "monika/3a");
     }
     private void InitializeGame()
     {

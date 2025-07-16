@@ -9,6 +9,8 @@ public class SceneController : MonoBehaviour
     private GameObject monika;
     private GameObject textBox;
 
+    AudioSource audioSource;
+
     //public Rect t44 = new Rect(100, 100, 100, 100); // Not SDL - Rect and RectTransform are different in Unity
 
     private void Awake()
@@ -31,6 +33,11 @@ public class SceneController : MonoBehaviour
         {
             Destroy(monika);
         }
+        audioSource = GetComponent<AudioSource>();
+        AudioClip bgm = Resources.Load<AudioClip>("audio/COMEUPOUTDAWAHTA");
+        audioSource.clip = bgm;
+        audioSource.loop = true;
+        audioSource.Play();
 
         // a raw jpg/png needs converting to a texture2D to be used in Resources.Load()
         Texture2D backgroundTexture = Resources.Load<Texture2D>(path);

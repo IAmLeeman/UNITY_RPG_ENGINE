@@ -34,4 +34,4 @@ public class DialogueManager : MonoBehaviour
         textComponent.text = newText;
     }
 }
-}
+

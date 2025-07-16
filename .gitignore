@@ -1,0 +1,18 @@
+
+## IGNORE EVERYTHING EXCEPT THE SCRIPT FOLDER
+*
+
+# Ignore everything
+/*
+
+# EXCEPT these files/folders
+!.gitignore
+!README.md
+!LICENSE
+
+# EXCEPT Assets folder and ONLY the Scripts inside it
+!Assets/
+Assets/*
+!Assets/Scripts/
+Assets/Scripts/*
+!Assets/Scripts/**

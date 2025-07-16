@@ -5,4 +5,6 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     int characterInitLevel = 1;
+    int characterInitEXP = 0;
+    
 }

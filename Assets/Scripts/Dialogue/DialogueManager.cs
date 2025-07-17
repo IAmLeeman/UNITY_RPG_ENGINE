@@ -7,26 +7,36 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     private TextMeshProUGUI textComponent;
+    private GameObject textBox;
 
-    void Start()
-    {
-        GameObject canvasGO = new GameObject("Canvas");
-        Canvas canvas = canvasGO.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvasGO.AddComponent<CanvasScaler>();
-        canvasGO.AddComponent<GraphicRaycaster>();
-
-        GameObject textGO = new GameObject("Text");
-        textGO.transform.SetParent(canvasGO.transform);
+    IEnumerator Start()
+    {   
+        yield return new WaitForSeconds(0.1f); // Wait for scene to load
+        textBox = GameObject.FindGameObjectWithTag("TextBox");
+        if (textBox == null)
+        {
+            Debug.Log("TextBox not found");
+            yield break;
+        }
+          
+        GameObject textGO = new GameObject("DialogueText");
+        textGO.transform.SetParent(textBox.transform, false);
 
         textComponent = textGO.AddComponent<TextMeshProUGUI>();
-        textComponent.text = "Hello, Doki World!";
+
+            // Set anchors to stretch inside textbox
+        RectTransform rect = textComponent.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0, 0);
+        rect.anchorMax = new Vector2(1, 1);
+        rect.offsetMin = new Vector2(10, 10);
+        rect.offsetMax = new Vector2(-10, -10);
+
         textComponent.fontSize = 24;
         textComponent.color = Color.white;
-
-        RectTransform rect = textComponent.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(600, 200);
-        rect.anchoredPosition = Vector2.zero;
+        textComponent.alignment = TextAlignmentOptions.TopLeft;
+        
+        textComponent.text = "Hello, Doki World!";
+ 
     }
 
     public void UpdateText(string newText)

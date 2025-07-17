@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class SceneController : MonoBehaviour
     private GameObject background;
     private GameObject monika;
     private GameObject textBox;
+
+    Texture2D textBoxTexture;
 
     AudioSource audioSource;
 
@@ -39,12 +42,15 @@ public class SceneController : MonoBehaviour
         audioSource.loop = true;
         audioSource.Play();
 
+        
+
         // a raw jpg/png needs converting to a texture2D to be used in Resources.Load()
         Texture2D backgroundTexture = Resources.Load<Texture2D>(path);
         Texture2D monikaTexture = Resources.Load<Texture2D>(monikaPath);
-        Texture2D textBoxTexture = Resources.Load<Texture2D>("gui/textbox");
+        textBoxTexture = Resources.Load<Texture2D>("gui/textbox");
 
-        
+        createTextBox();
+
         if (backgroundTexture == null)
         {
             Debug.LogError("Failed to load background texture.");
@@ -52,12 +58,11 @@ public class SceneController : MonoBehaviour
         }
         Sprite backgroundSprite = Sprite.Create(backgroundTexture, new Rect(0,0, backgroundTexture.width, backgroundTexture.height), new Vector2(0.5f, 0.5f), 100f);
         Sprite monikaSprite = Sprite.Create(monikaTexture, new Rect(0,0, monikaTexture.width, monikaTexture.height), new Vector2(0.5f, 0.5f), 100f);
-        Sprite textBoxSprite = Sprite.Create(textBoxTexture, new Rect(0,0, textBoxTexture.width, textBoxTexture.height), new Vector2(0.5f, 0.5f), 100f);
+       
 
         background = new GameObject("Background");
         monika = new GameObject("Monika");
-        textBox = new GameObject("TextBox");
-
+        
         SpriteRenderer sr = background.AddComponent<SpriteRenderer>();
         sr.sprite = backgroundSprite;
         sr.sortingOrder = -10; // Background should be behind everything else
@@ -66,11 +71,39 @@ public class SceneController : MonoBehaviour
         msr.sprite = monikaSprite;
         msr.sortingOrder = 5; // Monika should be in front of the background
 
-        SpriteRenderer tsr = textBox.AddComponent<SpriteRenderer>();
-        tsr.sprite = textBoxSprite;
-        tsr.sortingOrder = 10; // TextBox should be in front of Monika
-
         background.transform.position = Vector3.zero;
         textBox.transform.position = new Vector3(0, -4, 0);
+    }
+
+    void createTextBox()
+    {
+        GameObject canvasGO = new GameObject("Canvas");
+        Canvas canvas = canvasGO.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasGO.AddComponent<CanvasScaler>();
+        canvasGO.AddComponent<GraphicRaycaster>();
+
+        canvasGO.transform.localPosition = Vector3.zero;
+        canvasGO.transform.localRotation = Quaternion.identity;
+        canvasGO.transform.localScale = Vector3.one;
+
+
+        textBox = new GameObject("TextBox", typeof(RectTransform));
+        textBox.tag = "TextBox";
+        textBox.transform.SetParent(canvasGO.transform, false);
+
+        Image img = textBox.AddComponent<Image>();
+        Sprite textBoxSprite = Sprite.Create(textBoxTexture, new Rect(0, 0, textBoxTexture.width, textBoxTexture.height), new Vector2(0.5f, 0.5f), 100f);
+
+        img.sprite = textBoxSprite;
+
+
+        RectTransform textBoxRect = textBox.GetComponent<RectTransform>();
+        textBoxRect.anchorMin = new Vector2(0.5f, 0.5f);
+        textBoxRect.anchorMax = new Vector2(0.5f, 0.5f);
+        textBoxRect.pivot = new Vector2(0.5f, 0.5f);
+        textBoxRect.anchoredPosition = Vector2.zero;
+        textBoxRect.sizeDelta = new Vector2(600, 150); // width, height
+
     }
 }

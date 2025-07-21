@@ -49,4 +49,11 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+    public void GetKeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            //AdvanceDialogue();
+        }
+    }
 }

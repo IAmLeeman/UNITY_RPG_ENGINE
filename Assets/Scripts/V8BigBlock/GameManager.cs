@@ -16,10 +16,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        DialogueManager = FindObjectOfType<DialogueManager>();
+
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+             Destroy(gameObject);
+             return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -28,6 +30,10 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SceneController.Instance.testScene("bg/bsod", "monika/3a");
+    }
+    private void Update()
+    {
+        GetKeyInput();
     }
     private void InitializeGame()
     {
@@ -53,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //AdvanceDialogue();
+            DialogueManager.AdvanceDialogue();
         }
     }
 }

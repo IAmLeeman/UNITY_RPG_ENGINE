@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Ink.Runtime;
 
 public class DialogueManager : MonoBehaviour
 {
     private TextMeshProUGUI textComponent;
     private GameObject textBox;
+    public TextAsset inkJSON;
+
+    private Story story;
 
     IEnumerator Start()
     {   
@@ -34,14 +38,18 @@ public class DialogueManager : MonoBehaviour
         textComponent.fontSize = 24;
         textComponent.color = Color.white;
         textComponent.alignment = TextAlignmentOptions.TopLeft;
-        
-        textComponent.text = "Hello, Doki World!";
- 
+        story = new Story(inkJSON.text);
+
     }
 
-    public void UpdateText(string newText)
+    public void AdvanceDialogue()
     {
-        textComponent.text = newText;
+       
+        string firstLine = story.Continue().Trim();
+        textComponent.text = firstLine;
+
+        Debug.Log("Press de E man. Ova");
+        index++;
     }
 }
 

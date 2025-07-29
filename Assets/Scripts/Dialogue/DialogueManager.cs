@@ -12,9 +12,11 @@ public class DialogueManager : MonoBehaviour
     public TextAsset inkJSON;
 
     private Story story;
+    private SceneController sceneController;
 
     IEnumerator Start()
-    {   
+    {
+        sceneController = FindObjectOfType<SceneController>();
         yield return new WaitForSeconds(0.1f); // Wait for scene to load
         textBox = GameObject.FindGameObjectWithTag("TextBox");
         if (textBox == null)
@@ -44,12 +46,19 @@ public class DialogueManager : MonoBehaviour
 
     public void AdvanceDialogue()
     {
-       
-        string firstLine = story.Continue().Trim();
-        textComponent.text = firstLine;
+        if (story.canContinue)
+        {
+            string firstLine = story.Continue().Trim();
+            textComponent.text = firstLine;
 
-        Debug.Log("Press de E man. Ova");
-        index++;
+            if (firstLine == "START_TUTORIAL_BATTLE")
+            {
+                sceneController.BattleTestScene("audio/COMEUPDAWAHTA");
+            }
+
+            Debug.Log("Press de E man. Ova");
+        }
+        
     }
 }
 

@@ -14,10 +14,13 @@ public class SceneController : MonoBehaviour
 
     AudioSource audioSource;
 
+    private CharacterManager characterManager; 
+
     //public Rect t44 = new Rect(100, 100, 100, 100); // Not SDL - Rect and RectTransform are different in Unity
 
     private void Awake()
     {
+        characterManager = FindObjectOfType<CharacterManager>();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -25,13 +28,12 @@ public class SceneController : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        
     }
     public void testScene(string path, string monikaPath)
     {
-        if (background != null)
-        {
-            Destroy(background);
-        }
+       
         if (monika != null)
         {
             Destroy(monika);
@@ -104,6 +106,26 @@ public class SceneController : MonoBehaviour
         textBoxRect.pivot = new Vector2(0.5f, 0.5f);
         textBoxRect.anchoredPosition = Vector2.zero;
         textBoxRect.sizeDelta = new Vector2(600, 150); // width, height
+
+    }
+
+    public void BattleTestScene(string audioFile)
+    {
+        if (background != null)
+        {
+            Destroy(background);
+        }
+        if (monika != null)
+        {
+            Destroy(monika);
+        }
+        audioSource = GetComponent<AudioSource>();
+        AudioClip bgm = Resources.Load<AudioClip>(audioFile);
+        audioSource.clip = bgm;
+        audioSource.loop = true;
+        audioSource.Play();
+        characterManager.LoadCharacters();
+
 
     }
 }

@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public static CharacterManager CharacterManager { get; private set; }
     public static DialogueManager DialogueManager { get; private set; }
     public static SceneController SceneController { get; private set; }
+
+    public static BattleManager BattleManager { get; private set; }
     public bool IsPaused { get; private set; }
 
     private void Awake()
